@@ -1,3 +1,0 @@
-# projectoTienda
-//hola mundo
-JAJA
