@@ -8,4 +8,6 @@ abstract class Animal implements Vendible{
     private boolean sexo;
     private String paisOrigen;
     private String tipoAlimentacion;
+
+    public abstract void crearJSON();
 }
