@@ -8,6 +8,7 @@ public class Acuatico extends Animal{
     private boolean isDulce;
     private int temperaturaIdeal;
 
+
     @Override
     public void crearJSON() {
         //Serialization
@@ -29,5 +30,22 @@ public class Acuatico extends Animal{
         }catch (IOException e){
             System.out.println("No se pudo guardar el archivo");
         }
+    }
+
+    //todo crear
+    @Override
+    public boolean isDisponible() {
+        return false;
+    }
+
+    //todo crear
+    @Override
+    public void quitarDeStock() {
+    }
+
+    @Override
+    public void vender() {
+        isDisponible();
+        quitarDeStock();
     }
 }

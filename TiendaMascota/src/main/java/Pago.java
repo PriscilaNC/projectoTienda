@@ -5,22 +5,22 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 
-public class Pago {
+public class Pago implements Mostrable{
     private int codigo;
     private String tipo;
     private int monto;
     private Date fecha;
-    private Persona emisor;
-    private Persona receptor;
+    private Persona cobrador;
+    private Persona pagador;
     private String direccion;
 
-    public Pago(int codigo, String tipo, int monto, Date fecha, Persona emisor, Persona receptor, String direccion) {
+    public Pago(int codigo, String tipo, int monto, Date fecha, Persona cobrador, Persona pagador, String direccion) {
         this.codigo = codigo;
         this.tipo = tipo;
         this.monto = monto;
         this.fecha = fecha;
-        this.emisor = emisor;
-        this.receptor = receptor;
+        this.cobrador = cobrador;
+        this.pagador = pagador;
         this.direccion = direccion;
     }
 
@@ -44,5 +44,20 @@ public class Pago {
         }catch (IOException e){
             System.out.println("No se pudo guardar el archivo");
         }
+    }
+
+    @Override
+    public void imprimirEnPantalla() {
+        System.out.println(this);
+    }
+
+    @Override
+    public String toString() {
+        return
+                "Transaccion numero: " + codigo +
+                "Pago con " + tipo + '\'' +
+                "$ " + monto +
+                "Realizado el " + fecha+ ", en" + direccion+".";
+
     }
 }

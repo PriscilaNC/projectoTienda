@@ -31,4 +31,21 @@ public class Terrestre extends Animal{
             System.out.println("No se pudo guardar el archivo");
         }
     }
+
+    @Override
+    public boolean isDisponible() {
+        return false;
+    }
+
+    @Override
+    public void quitarDeStock() {
+
+    }
+
+
+
+    @Override
+    public void vender() {
+
+    }
 }

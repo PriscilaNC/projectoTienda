@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Boleta implements Vendible{
+public class Boleta implements Mostrable{
     private int codigo;
     private ArrayList<Pago> boleta;
     private ArrayList<Producto> detalleProducto;
@@ -57,5 +57,21 @@ public class Boleta implements Vendible{
         }catch (IOException e){
             System.out.println("No se pudo guardar el archivo");
         }
+    }
+
+    @Override
+    public void imprimirEnPantalla() {
+        System.out.println(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Boleta{" +
+                "codigo=" + codigo +
+                ", boleta=" + boleta +
+                ", detalleProducto=" + detalleProducto +
+                ", detalleAnimal=" + detalleAnimal +
+                ", total=" + total +
+                '}';
     }
 }
