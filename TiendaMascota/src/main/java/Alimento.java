@@ -11,6 +11,15 @@ public class Alimento extends Producto{
     private String tipoAnimal;
     private double cantidadEnKg;
 
+    public Alimento(int codigo, int precio, String nombre, String descripcion, Date fechaElaboracion, Date fechaVencimiento, String tipoAnimal, double cantidadEnKg) {
+        super(codigo, precio, nombre, descripcion);
+        this.fechaElaboracion = fechaElaboracion;
+        this.fechaVencimiento = fechaVencimiento;
+        this.tipoAnimal = tipoAnimal;
+        this.cantidadEnKg = cantidadEnKg;
+        comprar();
+    }
+
     @Override
     public void crearJSON() {
         //Serialization
@@ -35,18 +44,40 @@ public class Alimento extends Producto{
     }
 
     @Override
-    public boolean isDisponible() {
+    public boolean isDisponible() {if (this.getStock() != 0) {
+        return true;
+    }else{
+        System.out.println("No hay stock");
         return false;
+        }
     }
-
-    @Override
-    public void quitarDeStock() {
-
-    }
-
 
     @Override
     public void vender() {
+        if (isDisponible()) {
+            this.setStock(this.getStock() - 1);
+        }else{
+            System.out.println("No se pudo realizar la venta");
+        }
+    }
 
+    @Override
+    public void comprar() {
+        this.setStock(this.getStock()+1);
+    }
+
+    @Override
+    public void actualizarDB() {
+
+    }
+
+    @Override
+    public String toString() {
+        return "Alimento{" +
+                "fechaElaboracion=" + fechaElaboracion +
+                ", fechaVencimiento=" + fechaVencimiento +
+                ", tipoAnimal='" + tipoAnimal + '\'' +
+                ", cantidadEnKg=" + cantidadEnKg +
+                "} " + super.toString();
     }
 }

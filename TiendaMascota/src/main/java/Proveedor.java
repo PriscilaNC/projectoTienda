@@ -35,5 +35,11 @@ public class Proveedor extends Persona{
         }
     }
 
-
+    @Override
+    public String toString() {
+        return "Proveedor{" +
+                "organizacion='" + organizacion + '\'' +
+                ", tipoProveedor='" + tipoProveedor + '\'' +
+                "} " + super.toString();
+    }
 }

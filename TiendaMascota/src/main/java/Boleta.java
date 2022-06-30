@@ -64,6 +64,18 @@ public class Boleta implements Mostrable{
         System.out.println(this);
     }
 
+    //todo
+    public void agregarAnimal(Animal animal){
+        detalleAnimal.add(animal);
+    }
+    
+    //todo
+    public void agregarProducto(Producto producto){
+        detalleProducto.add(producto);
+    }
+
+    
+
     @Override
     public String toString() {
         return "Boleta{" +

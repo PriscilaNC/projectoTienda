@@ -8,6 +8,12 @@ public class Accesorio extends Producto{
     private String material;
     private String tipo;
 
+    public Accesorio(int codigo, int precio, String nombre, String descripcion, String material, String tipo) {
+        super(codigo, precio, nombre, descripcion);
+        this.material = material;
+        this.tipo = tipo;
+        comprar();
+    }
 
     @Override
     public void crearJSON() {
@@ -33,22 +39,38 @@ public class Accesorio extends Producto{
     }
 
     @Override
-    public boolean isDisponible() {
+    public boolean isDisponible() {if (this.getStock() != 0) {
+        return true;
+    }else{
+        System.out.println("No hay stock");
         return false;
-    }
-
-    @Override
-    public void quitarDeStock() {
-
-    }
-
-    @Override
-    public void agregarABoleta() {
-
+        }
     }
 
     @Override
     public void vender() {
+        if (isDisponible()) {
+            this.setStock(this.getStock() - 1);
+        }else{
+            System.out.println("No se pudo realizar la venta");
+        }
+    }
 
+    @Override
+    public void comprar() {
+        this.setStock(this.getStock()+1);
+    }
+
+    @Override
+    public void actualizarDB() {
+
+    }
+
+    @Override
+    public String toString() {
+        return "Accesorio{" +
+                "material='" + material + '\'' +
+                ", tipo='" + tipo + '\'' +
+                "} " + super.toString();
     }
 }

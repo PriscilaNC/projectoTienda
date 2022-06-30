@@ -3,6 +3,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Date;
 
 public class Pago implements Mostrable{
@@ -14,11 +15,10 @@ public class Pago implements Mostrable{
     private Persona pagador;
     private String direccion;
 
-    public Pago(int codigo, String tipo, int monto, Date fecha, Persona cobrador, Persona pagador, String direccion) {
+    public Pago(int codigo, String tipo, int monto, Persona cobrador, Persona pagador, String direccion) {
         this.codigo = codigo;
         this.tipo = tipo;
         this.monto = monto;
-        this.fecha = fecha;
         this.cobrador = cobrador;
         this.pagador = pagador;
         this.direccion = direccion;
@@ -49,6 +49,11 @@ public class Pago implements Mostrable{
     @Override
     public void imprimirEnPantalla() {
         System.out.println(this);
+    }
+
+    public void setFecha(String s){
+      Date date = Date.from(Instant.parse(s));
+      this.fecha = date;
     }
 
     @Override

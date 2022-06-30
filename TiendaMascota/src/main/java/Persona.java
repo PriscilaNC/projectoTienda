@@ -16,4 +16,13 @@ abstract class Persona {
     }
 
     public abstract void crearJSON();
+
+    @Override
+    public String toString() {
+        return "Persona{" +
+                "rut='" + rut + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", edad=" + edad +
+                '}';
+    }
 }

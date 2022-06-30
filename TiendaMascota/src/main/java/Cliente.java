@@ -34,5 +34,21 @@ public class Cliente extends Persona{
         }
     }
 
+    //todo
+    public void comprarAnimal(Animal animal){
+        this.boleta.agregarAnimal(animal);
+    }
 
+    //todo
+    public void comprarProducto(Producto producto){
+        this.boleta.agregarProducto(producto);
+    }
+
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "boleta=" + boleta +
+                "} " + super.toString();
+    }
 }

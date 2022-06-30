@@ -39,5 +39,15 @@ public class Funcionario extends Persona{
         }
     }
 
-
+    @Override
+    public String toString() {
+        return "Funcionario{" +
+                "cargo='" + cargo + '\'' +
+                ", fono='" + fono + '\'' +
+                ", correo='" + correo + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", sueldo=" + sueldo +
+                ", tipoContrato=" + tipoContrato +
+                "} " + super.toString();
+    }
 }

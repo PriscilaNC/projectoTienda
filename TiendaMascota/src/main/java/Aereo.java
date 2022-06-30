@@ -8,6 +8,13 @@ public class Aereo extends Animal{
     private String colorPlumaje;
     private String tipopata;
 
+    public Aereo(String nombre, String raza, String especie, double masa, int edad, int valor, boolean sexo, String paisOrigen, String tipoAlimentacion, String colorPlumaje, String tipopata) {
+        super(nombre, raza, especie, masa, edad, valor, sexo, paisOrigen, tipoAlimentacion);
+        this.colorPlumaje = colorPlumaje;
+        this.tipopata = tipopata;
+        comprar();
+    }
+
     @Override
     public void crearJSON() {
         //Serialization
@@ -32,17 +39,38 @@ public class Aereo extends Animal{
     }
 
     @Override
-    public boolean isDisponible() {
+    public boolean isDisponible() {if (this.getStock() != 0) {
+        return true;
+    }else{
+        System.out.println("No hay stock");
         return false;
-    }
-
-    @Override
-    public void quitarDeStock() {
-
+        }
     }
 
     @Override
     public void vender() {
+        if (isDisponible()) {
+            this.setStock(this.getStock() - 1);
+        }else{
+            System.out.println("No se pudo realizar la venta");
+        }
+    }
 
+    @Override
+    public void comprar() {
+        this.setStock(this.getStock()+1);
+    }
+
+    @Override
+    public void actualizarDB() {
+
+    }
+
+    @Override
+    public String toString() {
+        return "Aereo{" +
+                "colorPlumaje='" + colorPlumaje + '\'' +
+                ", tipopata='" + tipopata + '\'' +
+                "} " + super.toString();
     }
 }

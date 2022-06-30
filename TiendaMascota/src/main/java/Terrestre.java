@@ -9,6 +9,14 @@ public class Terrestre extends Animal{
     private int temperaturaIdeal;
     private boolean hasPelaje;
 
+    public Terrestre(String nombre, String raza, String especie, double masa, int edad, int valor, boolean sexo, String paisOrigen, String tipoAlimentacion, int nPatas, int temperaturaIdeal, boolean hasPelaje) {
+        super(nombre, raza, especie, masa, edad, valor, sexo, paisOrigen, tipoAlimentacion);
+        this.nPatas = nPatas;
+        this.temperaturaIdeal = temperaturaIdeal;
+        this.hasPelaje = hasPelaje;
+        comprar();
+    }
+
     @Override
     public void crearJSON() {
         //Serialization
@@ -33,19 +41,39 @@ public class Terrestre extends Animal{
     }
 
     @Override
-    public boolean isDisponible() {
+    public boolean isDisponible() {if (this.getStock() != 0) {
+        return true;
+    }else{
+        System.out.println("No hay stock");
         return false;
+        }
     }
-
-    @Override
-    public void quitarDeStock() {
-
-    }
-
-
 
     @Override
     public void vender() {
+        if (isDisponible()) {
+            this.setStock(this.getStock() - 1);
+        }else{
+            System.out.println("No se pudo realizar la venta");
+        }
+    }
 
+    @Override
+    public void comprar() {
+        this.setStock(this.getStock()+1);
+    }
+
+    @Override
+    public void actualizarDB() {
+
+    }
+
+    @Override
+    public String toString() {
+        return "Terrestre{" +
+                "nPatas=" + nPatas +
+                ", temperaturaIdeal=" + temperaturaIdeal +
+                ", hasPelaje=" + hasPelaje +
+                "} " + super.toString();
     }
 }

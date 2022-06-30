@@ -10,6 +10,14 @@ public class Medicamento extends Producto{
     private Date fechaVencimiento;
     private String tipoUso;
 
+    public Medicamento(int codigo, int precio, String nombre, String descripcion, Date fechaElaboracion, Date fechaVencimiento, String tipoUso) {
+        super(codigo, precio, nombre, descripcion);
+        this.fechaElaboracion = fechaElaboracion;
+        this.fechaVencimiento = fechaVencimiento;
+        this.tipoUso = tipoUso;
+        comprar();
+    }
+
     @Override
     public void crearJSON() {
         //Serialization
@@ -34,17 +42,39 @@ public class Medicamento extends Producto{
     }
 
     @Override
-    public boolean isDisponible() {
+    public boolean isDisponible() {if (this.getStock() != 0) {
+        return true;
+    }else{
+        System.out.println("No hay stock");
         return false;
-    }
-
-    @Override
-    public void quitarDeStock() {
-
+        }
     }
 
     @Override
     public void vender() {
+        if (isDisponible()) {
+            this.setStock(this.getStock() - 1);
+        }else{
+            System.out.println("No se pudo realizar la venta");
+        }
+    }
 
+    @Override
+    public void comprar() {
+        this.setStock(this.getStock()+1);
+    }
+
+    @Override
+    public void actualizarDB() {
+
+    }
+
+    @Override
+    public String toString() {
+        return "Medicamento{" +
+                "fechaElaboracion=" + fechaElaboracion +
+                ", fechaVencimiento=" + fechaVencimiento +
+                ", tipoUso='" + tipoUso + '\'' +
+                "} " + super.toString();
     }
 }

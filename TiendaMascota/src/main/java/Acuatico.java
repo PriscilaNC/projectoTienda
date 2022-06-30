@@ -8,6 +8,12 @@ public class Acuatico extends Animal{
     private boolean isDulce;
     private int temperaturaIdeal;
 
+    public Acuatico(String nombre, String raza, String especie, double masa, int edad, int valor, boolean sexo, String paisOrigen, String tipoAlimentacion, boolean isDulce, int temperaturaIdeal) {
+        super(nombre, raza, especie, masa, edad, valor, sexo, paisOrigen, tipoAlimentacion);
+        this.isDulce = isDulce;
+        this.temperaturaIdeal = temperaturaIdeal;
+        comprar();
+    }
 
     @Override
     public void crearJSON() {
@@ -32,20 +38,47 @@ public class Acuatico extends Animal{
         }
     }
 
-    //todo crear
     @Override
     public boolean isDisponible() {
-        return false;
-    }
+        //Metodo ternario
+        /*
+        boolean i = this.getStock() != 0 ? true : false;
+        return i;
+         */
 
-    //todo crear
-    @Override
-    public void quitarDeStock() {
+        //Metodo if/else
+        if (this.getStock() != 0) {
+            return true;
+        }else{
+            System.out.println("No hay stock");
+            return false;
+        }
     }
 
     @Override
     public void vender() {
-        isDisponible();
-        quitarDeStock();
+        if (isDisponible()) {
+            this.setStock(this.getStock() - 1);
+        }else{
+            System.out.println("No se pudo realizar la venta");
+        }
+    }
+
+    @Override
+    public void comprar() {
+        this.setStock(this.getStock()+1);
+    }
+
+    @Override
+    public void actualizarDB() {
+
+    }
+
+    @Override
+    public String toString() {
+        return super.toString()+"Acuatico{" +
+                "isDulce=" + isDulce +
+                ", temperaturaIdeal=" + temperaturaIdeal +
+                "} " ;
     }
 }
