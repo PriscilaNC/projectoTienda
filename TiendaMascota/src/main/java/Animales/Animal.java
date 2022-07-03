@@ -33,12 +33,24 @@ public abstract class Animal implements Comprable {
 
     public abstract void crearJSON();
 
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
+
     public int getStock() {
         return stock;
     }
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public Animal esteAnimal(){
+        return this;
     }
 
     private String sexo(){

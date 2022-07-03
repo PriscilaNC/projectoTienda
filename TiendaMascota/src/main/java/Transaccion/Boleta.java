@@ -1,6 +1,8 @@
 package Transaccion;
 
+
 import Animales.Animal;
+import Exceptions.MiExepcion;
 import Interface.Mostrable;
 import Personas.Cliente;
 import Productos.Producto;
@@ -10,6 +12,8 @@ import com.google.gson.GsonBuilder;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Boleta implements Mostrable {
     private int codigo;
@@ -47,6 +51,8 @@ public class Boleta implements Mostrable {
         this.total = total;
     }
 
+    //todo agregar exepcion personalizada
+
     public void crearJSON() {
         //Serialization
         //Crea el archivo
@@ -76,13 +82,36 @@ public class Boleta implements Mostrable {
 
     //todo agregar un metodo con programacion funcional
 
+
     public void agregarAnimal(Animal animal){
-        this.detalleAnimal.add(animal);
+        try {
+            this.detalleAnimal.add(animal);
+            if (animal.getClass() != Animal.class){
+                throw new MiExepcion();
+            }
+        }catch (MiExepcion e){
+            e.mensajeError();
+        }
     }
 
     public void agregarProducto(Producto producto){
-        this.detalleProducto.add(producto);
+        try {
+            this.detalleProducto.add(producto);
+            if (producto.getClass() != Producto.class){
+                throw new MiExepcion();
+            }
+        }catch (MiExepcion e){
+            e.mensajeError();
+        }
     }
+
+    //Map de animales
+    Map<Integer,Animal> animalMap = this.detalleAnimal.stream()
+            .collect(Collectors.toMap(Animal::getCodigo,Animal::esteAnimal));
+
+    //Map de producto
+    Map<Integer,Producto> productoMap = this.detalleProducto.stream()
+            .collect(Collectors.toMap(Producto::getCodigo,Producto::esteProducto));
 
     @Override
     public String toString() {
