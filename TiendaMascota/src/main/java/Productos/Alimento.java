@@ -23,9 +23,8 @@ public class Alimento extends Producto{
         this.fechaVencimiento = fechaVencimiento;
         this.tipoAnimal = tipoAnimal;
         this.cantidadEnKg = cantidadEnKg;
-        agregarStock();
-        //todo agregar metodo db al constructor
-        actualizarDB();
+        this.agregarStock();
+        this.actualizarDB();
     }
 
     @Override
@@ -65,7 +64,6 @@ public class Alimento extends Producto{
         this.setStock(this.getStock() + cantidad);
     }
 
-    //todo probar DateFormatException
     @Override
     public void actualizarDB() {
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -79,7 +77,7 @@ public class Alimento extends Producto{
                     + "," + super.descripcion + "," + fechaElaboracion
                     + "," + fechaVencimiento + "," + tipoAnimal + ","
                     + cantidadEnKg + ");";
-            Pattern patron = Pattern.compile("^('[1-2]|[0-9]|[0-9]|[0-9])(-)([0-1]|[0-9])(-)([0-3]|[0-9]')$");
+            Pattern patron = Pattern.compile("^'\\d{4}-\\d{2}-\\d{2}'$");
             Matcher matcher1 = patron.matcher(fechaElaboracion);
             Matcher matcher2 = patron.matcher(fechaVencimiento);
             if( !matcher1.find() || !matcher2.find()) {
@@ -89,7 +87,7 @@ public class Alimento extends Producto{
             System.out.println(sql);
             System.out.println("Datos insertados en la tabla...");
         } catch ( DateFormatException e) {
-            e.errormessage();
+            System.err.println(e.errormessage());
         } catch (SQLException e){
             e.printStackTrace();
         }

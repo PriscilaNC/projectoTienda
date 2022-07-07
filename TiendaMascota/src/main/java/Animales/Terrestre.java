@@ -10,7 +10,8 @@ public class Terrestre extends Animal{
 
     public Terrestre(int codigo, String nombre, String raza, String especie, String color, double masa, int edad, int valor, boolean sexo, String paisOrigen, String tipoAlimentacion) {
         super(codigo, nombre, raza, especie, color, masa, edad, valor, sexo, paisOrigen, tipoAlimentacion);
-        agregarStock();
+        this.agregarStock();
+        this.actualizarDB();
     }
 
     @Override

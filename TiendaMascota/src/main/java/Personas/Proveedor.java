@@ -15,6 +15,7 @@ public class Proveedor extends Persona{
 
     public Proveedor(String rut, String nombre, int edad) {
         super(rut, nombre, edad);
+        this.actualizarDB();
     }
 
     @Override
@@ -29,8 +30,9 @@ public class Proveedor extends Persona{
         ) {
             System.out.println("Insertando datos en la tabla...");
 
-//todo arreglar
-            String sql = "INSERT INTO proveedor (rut, nombre, edad) values " + "(" + super.rut + "," +super.nombre + "," + super.edad + ");";
+            String sql = "INSERT INTO proveedor (rut, nombre, edad, organizacion, tipo_proveedor) values "
+                    + "(" + super.rut + "," +super.nombre + "," + super.edad
+                    + "," + organizacion + "," + tipoProveedor + ");";
             stmt.executeUpdate(sql);
             System.out.println(sql);
 

@@ -16,8 +16,15 @@ public class Funcionario extends Persona{
     protected static List<Persona> staticFuncionario = new ArrayList<>();
     static String QUERY = "SELECT * FROM funcionarios";
 
-    public Funcionario(String rut, String nombre, int edad) {
+    public Funcionario(String rut, String nombre, int edad, String cargo, String fono, String correo, String direccion, int sueldo, boolean tipoJornada) {
         super(rut, nombre, edad);
+        this.cargo = cargo;
+        this.fono = fono;
+        this.correo = correo;
+        this.direccion = direccion;
+        this.sueldo = sueldo;
+        this.tipoJornada = tipoJornada;
+        this.actualizarDB();
     }
 
     @Override
@@ -32,8 +39,9 @@ public class Funcionario extends Persona{
         ) {
             System.out.println("Insertando datos en la tabla...");
 
-//todo arreglar
-            String sql = "INSERT INTO funcionario (rut, nombre, edad) values " + "(" + super.rut + "," + super.nombre + "," +super.edad + ");";
+            String sql = "INSERT INTO funcionario (rut, nombre, edad, cargo, fono, correo, direccion, sueldo, tipo_jornada) values "
+                    + "(" + super.rut + "," + super.nombre + "," + super.edad + "," + cargo + "," + fono
+                    + "," + correo + "," + direccion + "," + sueldo + "," + tipoJornada + ");";
             stmt.executeUpdate(sql);
             System.out.println(sql);
 

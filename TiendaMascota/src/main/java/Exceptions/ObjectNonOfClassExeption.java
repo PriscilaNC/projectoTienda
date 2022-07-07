@@ -9,6 +9,3 @@ public class ObjectNonOfClassExeption extends Exception{
         return "Objeto pertenece a otra clase";
     }
 }
-
-
-//todo actualizar

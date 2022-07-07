@@ -17,7 +17,8 @@ public class Accesorio extends Producto{
         super(codigo, precio, nombre, descripcion);
         this.material = material;
         this.tipo = tipo;
-        agregarStock();
+        this.agregarStock();
+        this.actualizarDB();
     }
 
     @Override

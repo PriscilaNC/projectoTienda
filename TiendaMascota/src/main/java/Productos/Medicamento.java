@@ -1,12 +1,14 @@
 package Productos;
 
 import Animales.Animal;
+import Exceptions.DateFormatException;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-//todo implementar DateFormatException
 
 public class Medicamento extends Producto{
     protected String fechaElaboracion;
@@ -20,7 +22,8 @@ public class Medicamento extends Producto{
         this.fechaElaboracion = fechaElaboracion;
         this.fechaVencimiento = fechaVencimiento;
         this.tipoUso = tipoUso;
-        agregarStock();
+        this.agregarStock();
+        this.actualizarDB();
     }
 
     @Override
@@ -72,11 +75,18 @@ public class Medicamento extends Producto{
                     + "(" + super.precio + "," + super.nombre
                     + "," + super.descripcion + "," + fechaElaboracion
                     + "," + fechaVencimiento + "," + tipoUso + ");";
+            Pattern patron = Pattern.compile("^'\\d{4}-\\d{2}-\\d{2}'$");
+            Matcher matcher1 = patron.matcher(fechaElaboracion);
+            Matcher matcher2 = patron.matcher(fechaVencimiento);
+            if( !matcher1.find() || !matcher2.find()) {
+                throw new DateFormatException();
+            }
             stmt.executeUpdate(sql);
             System.out.println(sql);
-
             System.out.println("Datos insertados en la tabla...");
-        } catch (SQLException e) {
+        } catch ( DateFormatException e) {
+            System.err.println(e.errormessage());
+        } catch (SQLException e){
             e.printStackTrace();
         }
     }

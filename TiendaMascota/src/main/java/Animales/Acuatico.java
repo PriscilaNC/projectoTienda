@@ -4,8 +4,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
-//todo revisar atributo acuatico ArrayList
 public class Acuatico extends Animal {
     protected boolean isDulce;
     protected int temperaturaIdeal;
@@ -16,7 +14,8 @@ public class Acuatico extends Animal {
         super(codigo, nombre, raza, especie, color, masa, edad, valor, sexo, paisOrigen, tipoAlimentacion);
         this.isDulce = isDulce;
         this.temperaturaIdeal = temperaturaIdeal;
-        agregarStock();
+        this.agregarStock();
+        this.actualizarDB();
     }
 
     @Override
