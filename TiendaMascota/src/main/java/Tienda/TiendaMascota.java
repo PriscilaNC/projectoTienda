@@ -3,6 +3,7 @@ package Tienda;
 import Animales.Acuatico;
 import Animales.Aereo;
 import Animales.Terrestre;
+import Personas.Cliente;
 import Productos.Accesorio;
 import Productos.Alimento;
 import Productos.Medicamento;
@@ -31,5 +32,7 @@ public class TiendaMascota {
 
     Medicamento m1 = new Medicamento(1,8990,"'Pipeta gatos FeliMed'","'Pipeta para gatos hasta 4 kg 0,4ml'","'2021-12-04'","'2025-10-04'","'Pipeta antipulgas'");
     Medicamento m2 = new Medicamento(2,2990,"'Antiparasitario PharmaPet'","'Antiparasitario solido 1 ud. para perros y gatos'","'2022-01-09'","'2026-01-09'","'Antiparasitario'");
+
+    Cliente c1 = new Cliente("204899169", "jabin", 21);
   }
 }

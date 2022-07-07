@@ -12,8 +12,6 @@ import Productos.Medicamento;
 import Tienda.TiendaMascota;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 public class GUI {
     //Botones
     private JButton subirTodoButton;
