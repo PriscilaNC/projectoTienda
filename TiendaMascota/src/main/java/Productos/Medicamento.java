@@ -1,18 +1,19 @@
 package Productos;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import Animales.Animal;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Date;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Medicamento extends Producto{
-    private Date fechaElaboracion;
-    private Date fechaVencimiento;
-    private String tipoUso;
+    protected String fechaElaboracion;
+    protected String fechaVencimiento;
+    protected String tipoUso;
+    protected static List<Producto> staticProducto = new ArrayList<>();
+    static String QUERY = "SELECT * FROM medicamento";
 
-    public Medicamento(int codigo, int precio, String nombre, String descripcion, Date fechaElaboracion, Date fechaVencimiento, String tipoUso) {
+    public Medicamento(int codigo, int precio, String nombre, String descripcion, String fechaElaboracion, String fechaVencimiento, String tipoUso) {
         super(codigo, precio, nombre, descripcion);
         this.fechaElaboracion = fechaElaboracion;
         this.fechaVencimiento = fechaVencimiento;
@@ -21,26 +22,12 @@ public class Medicamento extends Producto{
     }
 
     @Override
-    public void crearJSON() {
-        //Serialization
-        //Crea el archivo
-        Gson pGson = new Gson();
-        String stringJson = pGson.toJson(this);
-        System.out.println("stringJson = " + stringJson);
+    public void agregarStatico() {
+        staticProducto.add(this);
+    }
 
-        //Deserialization
-        //Obtiene datos desde el archivo
-        Medicamento medicamento = pGson.fromJson(stringJson, Medicamento.class);
-        System.out.println("medicamento = " + medicamento);
-        FileWriter writer;
-        try{
-            writer = new FileWriter("medicamento.json");
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(this,writer);
-            writer.close();
-        }catch (IOException e){
-            System.out.println("No se pudo guardar el archivo");
-        }
+    public static List<Producto> getStaticMedicamento() {
+        return staticProducto;
     }
 
     @Override
@@ -73,14 +60,46 @@ public class Medicamento extends Producto{
 
     @Override
     public void actualizarDB() {
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             Statement stmt = conn.createStatement();
+        ) {
+            System.out.println("Insertando datos en la tabla...");
 
+
+            String sql = "INSERT INTO medicamento (precio, nombre, descripcion, fecha_elab, fecha_caduc, tipo_uso) values "
+                    + "(" + super.precio + "," + super.nombre
+                    + "," + super.descripcion + "," + fechaElaboracion
+                    + "," + fechaVencimiento + "," + tipoUso + ");";
+            stmt.executeUpdate(sql);
+            System.out.println(sql);
+
+            System.out.println("Datos insertados en la tabla...");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void consultarMedicamento(){
+        try {
+            Connection con = DriverManager.getConnection(DB_URL,USER,PASS);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(QUERY);
+            while (rs.next()){
+                System.out.println("Codigo: " + rs.getInt("codigo"));
+                System.out.println("Precio: " + rs.getInt("precio"));
+                System.out.println("Nombre: " + rs.getString("nombre"));
+                System.out.println("Descripcion: " + rs.getString("descripcion"));
+                System.out.println("FechaElaboracion: " + rs.getString("fecha_elab"));
+                System.out.println("FechaCaduc: " + rs.getString("fecha_caduc"));
+                System.out.println("TipoUso: " + rs.getString("tipo_uso"));
+            }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
     }
 
     @Override
     public String toString() {
-        return  super.toString()+
-                "Fecha elaboracion: " + fechaElaboracion + "\n" +
-                "Fecha caducacion: " + fechaVencimiento + "\n" +
-                "Uso: " + tipoUso;
+        return  super.toString() + fechaElaboracion + fechaVencimiento + tipoUso;
     }
 }

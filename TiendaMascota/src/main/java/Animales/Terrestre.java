@@ -1,39 +1,25 @@
 package Animales;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Terrestre extends Animal{
+    protected static List<Animal> staticTerrestre = new ArrayList<>();
+    static String QUERY = "SELECT * FROM aereo";
 
-    public Terrestre(int codido, String nombre, String raza, String especie, String color, double masa, int edad, int valor, boolean sexo, String paisOrigen, String tipoAlimentacion) {
-        super(codido, nombre, raza, especie, color, masa, edad, valor, sexo, paisOrigen, tipoAlimentacion);
+    public Terrestre(int codigo, String nombre, String raza, String especie, String color, double masa, int edad, int valor, boolean sexo, String paisOrigen, String tipoAlimentacion) {
+        super(codigo, nombre, raza, especie, color, masa, edad, valor, sexo, paisOrigen, tipoAlimentacion);
         agregarStock();
     }
 
     @Override
-    public void crearJSON() {
-        //Serialization
-        //Crea el archivo
-        Gson pGson = new Gson();
-        String stringJson = pGson.toJson(this);
-        System.out.println("stringJson = " + stringJson);
+    public void agregarStatico() {
+        staticTerrestre.add(this);
+    }
 
-        //Deserialization
-        //Obtiene datos desde el archivo
-        Terrestre terrestre = pGson.fromJson(stringJson, Terrestre.class);
-        System.out.println("terrestre = " + terrestre);
-        FileWriter writer;
-        try{
-            writer = new FileWriter("terrestre.json");
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(this,writer);
-            writer.close();
-        }catch (IOException e){
-            System.out.println("No se pudo guardar el archivo");
-        }
+    public static List<Animal> getStaticAereo() {
+        return staticTerrestre;
     }
 
     @Override
@@ -66,7 +52,47 @@ public class Terrestre extends Animal{
 
     @Override
     public void actualizarDB() {
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             Statement stmt = conn.createStatement();
+        ) {
+            System.out.println("Insertando datos en la tabla...");
 
+
+            String sql = "INSERT INTO terrestre (nombre, raza, especie, color, masa, edad, valor, sexo, pais_origen, tipo_alimentacion) values "
+                    + "(" + super.nombre + "," + super.raza
+                    + "," + super.especie + "," + super.color + "," + super.masa + "," + super.edad
+                    + "," + super.valor + "," + super.sexo + "," + super.paisOrigen
+                    + "," + super.tipoAlimentacion + ");";
+            stmt.executeUpdate(sql);
+            System.out.println(sql);
+
+            System.out.println("Datos insertados en la tabla...");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void consultarTerrestre(){
+        try {
+            Connection con = DriverManager.getConnection(DB_URL,USER,PASS);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(QUERY);
+            while (rs.next()){
+                System.out.println("Codigo: " + rs.getInt("codigo"));
+                System.out.println("Nombre: " + rs.getString("nombre"));
+                System.out.println("Raza: " + rs.getString("raza"));
+                System.out.println("Especie: " + rs.getString("especie"));
+                System.out.println("Color: " + rs.getString("color"));
+                System.out.println("Masa: " + rs.getDouble("masa"));
+                System.out.println("Edad: " + rs.getInt("edad"));
+                System.out.println("Valor: " + rs.getInt("valor"));
+                System.out.println("Sexo: " + rs.getString("sexo"));
+                System.out.println("PaisOrigen: " + rs.getString("pais_origen"));
+                System.out.println("TipoAlimentacion: " + rs.getString("tipo_alimentacion"));
+            }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
     }
 
     @Override

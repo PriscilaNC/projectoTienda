@@ -2,12 +2,17 @@ package Productos;
 
 import Interface.Comprable;
 
+import java.util.List;
+
 public abstract class Producto implements Comprable {
-    private int codigo;
-    private int precio;
-    private String nombre;
-    private int stock;
-    private String descripcion;
+    protected int codigo;
+    protected int precio;
+    protected String nombre;
+    protected String descripcion;
+    protected int stock;
+    static final String DB_URL = "jdbc:mysql://localhost/tienda_mascota";
+    static final String USER = "uwu";
+    static final String PASS = "12345678qwerty";
 
     public Producto(int codigo, int precio, String nombre, String descripcion) {
         this.codigo = codigo;
@@ -17,23 +22,19 @@ public abstract class Producto implements Comprable {
         agregarStock();
     }
 
-    public abstract void crearJSON();
+    public abstract void agregarStatico();
 
     public int getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
-    }
-
-    public int getStock() {
-        return stock;
-    }
+    public int getStock() {return stock;}
 
     public void setStock(int stock) {
         this.stock = stock;
     }
+
+    public abstract void actualizarDB();
 
     public Producto esteProducto(){
         return this;
@@ -41,10 +42,6 @@ public abstract class Producto implements Comprable {
 
     @Override
     public String toString() {
-        return  "Codigo: " + codigo +
-                "" + nombre + '\n' +
-                "$ " + precio +"\n"+
-                "Stock: " + stock +
-                "Descripcion: " + descripcion+"\n";
+        return  codigo + precio + nombre + descripcion;
     }
 }

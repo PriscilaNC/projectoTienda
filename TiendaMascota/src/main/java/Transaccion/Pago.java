@@ -2,11 +2,12 @@ package Transaccion;
 
 import Interface.Mostrable;
 import Personas.Persona;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 
 public class Pago implements Mostrable {
     private int codigo;
@@ -16,6 +17,9 @@ public class Pago implements Mostrable {
     private Persona cobrador;
     private Persona pagador;
     private String direccion;
+    static final String DB_URL = "jdbc:mysql://localhost/tienda_mascota";
+    static final String USER = "uwu";
+    static final String PASS = "12345678qwerty";
 
     public Pago(int codigo, String tipo, int monto, String fecha, Persona cobrador, Persona pagador, String direccion) {
         this.codigo = codigo;
@@ -27,40 +31,35 @@ public class Pago implements Mostrable {
         this.direccion = direccion;
     }
 
-    public void crearJSON() {
-        //Serialization
-        //Crea el archivo
-        Gson pGson = new Gson();
-        String stringJson = pGson.toJson(this);
-        System.out.println("stringJson = " + stringJson);
-
-        //Deserialization
-        //Obtiene datos desde el archivo
-        Pago pago = pGson.fromJson(stringJson, Pago.class);
-        System.out.println("pago = " + pago);
-        FileWriter writer;
-        try{
-            writer = new FileWriter("pago.json");
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(this,writer);
-            writer.close();
-        }catch (IOException e){
-            System.out.println("No se pudo guardar el archivo");
-        }
-    }
-
     @Override
     public void imprimirEnPantalla() {
         System.out.println(this);
     }
 
+    public void actualizarDB(){
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             Statement stmt = conn.createStatement();
+        ) {
+            System.out.println("Insertando datos en la tabla...");
+
+
+            String sql = "INSERT INTO cliente tipo, monto, fecha, cobrador, pagador, direccion) values "
+                    + "(" + tipo + "," + fecha + "," + cobrador
+                    + "," + pagador + "," + direccion +");";
+            stmt.executeUpdate(sql);
+            System.out.println(sql);
+
+            System.out.println("Datos insertados en la tabla...");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public String toString() {
         return
-                "Transaccion numero: " + codigo +"\n"+
-                "Transaccion.Pago con " + tipo + "\n"+
-                "$ " + monto +"\n"+
-                "Realizado el " + fecha+ ", en" + direccion+".";
+                 codigo + tipo + monto + fecha + cobrador + pagador + direccion;
 
     }
 }

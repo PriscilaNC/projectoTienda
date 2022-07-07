@@ -6,11 +6,11 @@ import Exceptions.MiExepcion;
 import Interface.Mostrable;
 import Personas.Cliente;
 import Productos.Producto;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,6 +22,9 @@ public class Boleta implements Mostrable {
     private ArrayList<Producto> detalleProducto;
     private ArrayList<Animal> detalleAnimal;
     private int total;
+    static final String DB_URL = "jdbc:mysql://localhost/tienda_mascota";
+    static final String USER = "uwu";
+    static final String PASS = "12345678qwerty";
 
     //Constructor completo
     public Boleta(int codigo, Cliente cliente, ArrayList<Pago> pagos, ArrayList<Producto> detalleProducto, ArrayList<Animal> detalleAnimal, int total) {
@@ -51,37 +54,18 @@ public class Boleta implements Mostrable {
         this.total = total;
     }
 
-    //todo agregar exepcion personalizada
+    public ArrayList<Producto> getDetalleProducto() {
+        return detalleProducto;
+    }
 
-    public void crearJSON() {
-        //Serialization
-        //Crea el archivo
-        Gson pGson = new Gson();
-        String stringJson = pGson.toJson(this);
-        System.out.println("stringJson = " + stringJson);
-
-        //Deserialization
-        //Obtiene datos desde el archivo
-        Boleta boleta = pGson.fromJson(stringJson, Boleta.class);
-        System.out.println("boleta = " + boleta);
-        FileWriter writer;
-        try{
-            writer = new FileWriter("boleta.json");
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(this,writer);
-            writer.close();
-        }catch (IOException e){
-            System.out.println("No se pudo guardar el archivo");
-        }
+    public ArrayList<Animal> getDetalleAnimal() {
+        return detalleAnimal;
     }
 
     @Override
     public void imprimirEnPantalla() {
         System.out.println(this);
     }
-
-    //todo agregar un metodo con programacion funcional
-
 
     public void agregarAnimal(Animal animal){
         try {
@@ -115,10 +99,5 @@ public class Boleta implements Mostrable {
 
     @Override
     public String toString() {
-        return "Boleta numero: "+ codigo +"\n"+
-                "Cliente: " + cliente +"\n"+
-                "Pagos: " + pagos +"\n"+
-                "Detalle: " + detalleProducto + detalleAnimal +"\n"+
-                "Total $" + total;
-    }
+        return "" + codigo + cliente + pagos + detalleProducto + detalleAnimal + total + "";}
 }

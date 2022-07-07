@@ -1,15 +1,16 @@
 package Personas;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import Productos.Producto;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.List;
 
 public abstract class Persona {
-    private String rut;
-    private String nombre;
-    private int edad;
+    protected String rut;
+    protected String nombre;
+    protected int edad;
+    static final String DB_URL = "jdbc:mysql://localhost/tienda_mascota";
+    static final String USER = "uwu";
+    static final String PASS = "12345678qwerty";
 
     public Persona(String rut, String nombre, int edad) {
         this.rut = rut;
@@ -17,12 +18,17 @@ public abstract class Persona {
         this.edad = edad;
     }
 
-    public abstract void crearJSON();
+    public abstract void agregarStatico();
+
+    public Persona estaPersona(){
+        return this;
+    }
+
+    public abstract void actualizarDB();
+
 
     @Override
     public String toString() {
-        return "Nombre: " + nombre + "\n"+
-                "Rut: " + rut + "\n"+
-                "Edad: " + edad + " años\n";
+        return rut + nombre + edad;
     }
 }

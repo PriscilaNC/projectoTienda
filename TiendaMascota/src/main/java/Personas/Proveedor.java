@@ -1,41 +1,64 @@
 package Personas;
 
+import Animales.Animal;
 import Productos.Producto;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Proveedor extends Persona{
-    private String organizacion;
-    private String tipoProveedor;
+    protected String organizacion;
+    protected String tipoProveedor;
+    protected static List<Persona> staticProveedor = new ArrayList<>();
+    static String QUERY = "SELECT * FROM proveedor";
 
     public Proveedor(String rut, String nombre, int edad) {
         super(rut, nombre, edad);
     }
 
     @Override
-    public void crearJSON() {
-        //Serialization
-        //Crea el archivo
-        Gson pGson = new Gson();
-        String stringJson = pGson.toJson(this);
-        System.out.println("stringJson = " + stringJson);
+    public void agregarStatico() {
+        staticProveedor.add(this);
+    }
 
-        //Deserialization
-        //Obtiene datos desde el archivo
-        Proveedor proveedor = pGson.fromJson(stringJson, Proveedor.class);
-        System.out.println("proveedor = " + proveedor);
-        FileWriter writer;
-        try{
-            writer = new FileWriter("proveedor.json");
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(this,writer);
-            writer.close();
-        }catch (IOException e){
-            System.out.println("No se pudo guardar el archivo");
+    @Override
+    public void actualizarDB() {
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             Statement stmt = conn.createStatement();
+        ) {
+            System.out.println("Insertando datos en la tabla...");
+
+//todo arreglar
+            String sql = "INSERT INTO proveedor (rut, nombre, edad) values " + "(" + super.rut + "," +super.nombre + "," + super.edad + ");";
+            stmt.executeUpdate(sql);
+            System.out.println(sql);
+
+            System.out.println("Datos insertados en la tabla...");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+    }
+
+    public static void consultarProveedor(){
+        try {
+            Connection con = DriverManager.getConnection(DB_URL,USER,PASS);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(QUERY);
+            while (rs.next()){
+                System.out.println("RUT: " + rs.getString("rut"));
+                System.out.println("Nombre: " + rs.getString("nombre"));
+                System.out.println("Edad: " + rs.getInt("edad"));
+                System.out.println("Organizacion: " + rs.getString("organizacion"));
+                System.out.println("TipoProveedor: " + rs.getString("tipo_proveedor"));
+            }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+    }
+
+    public static List<Persona> getStaticProveedor() {
+        return staticProveedor;
     }
 
     public void agregarProducto(Producto producto, int cantidad){
@@ -44,8 +67,6 @@ public class Proveedor extends Persona{
 
     @Override
     public String toString() {
-        return super.toString() +
-                "Organizacion: " + organizacion + '\n' +
-                "TipoProveedor: " + tipoProveedor;
+        return super.toString() + organizacion + tipoProveedor;
     }
 }

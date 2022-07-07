@@ -1,14 +1,17 @@
 package Productos;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import Animales.Animal;
+import Personas.Persona;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Accesorio extends Producto{
-    private String material;
-    private String tipo;
+    protected String material;
+    protected String tipo;
+    protected static List<Producto> staticAccesorio = new ArrayList<>();
+    static String QUERY = "SELECT * FROM accesorio";
 
     public Accesorio(int codigo, int precio, String nombre, String descripcion, String material, String tipo) {
         super(codigo, precio, nombre, descripcion);
@@ -18,26 +21,12 @@ public class Accesorio extends Producto{
     }
 
     @Override
-    public void crearJSON() {
-        //Serialization
-        //Crea el archivo
-        Gson pGson = new Gson();
-        String stringJson = pGson.toJson(this);
-        System.out.println("stringJson = " + stringJson);
+    public void agregarStatico() {
+        staticAccesorio.add(this);
+    }
 
-        //Deserialization
-        //Obtiene datos desde el archivo
-        Accesorio accesorio = pGson.fromJson(stringJson, Accesorio.class);
-        System.out.println("accesorio = " + accesorio);
-        FileWriter writer;
-        try{
-            writer = new FileWriter("accesorio.json");
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(this,writer);
-            writer.close();
-        }catch (IOException e){
-            System.out.println("No se pudo guardar el archivo");
-        }
+    public static List<Producto> getStaticAccesorio() {
+        return staticAccesorio;
     }
 
     @Override
@@ -70,13 +59,48 @@ public class Accesorio extends Producto{
 
     @Override
     public void actualizarDB() {
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             Statement stmt = conn.createStatement();
+        ) {
+            System.out.println("Insertando datos en la tabla...");
 
+
+            String sql = "INSERT INTO accesorio (precio, nombre, descripcion, material, tipo) values "
+                    + "(" + super.precio + "," + super.nombre
+                    + "," + super.descripcion + ","  + material + ","
+                    + tipo + ");";
+            stmt.executeUpdate(sql);
+            System.out.println(sql);
+
+            System.out.println("Datos insertados en la tabla...");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
+    public static void consultarAccesorio(){
+        try {
+            Connection con = DriverManager.getConnection(DB_URL,USER,PASS);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(QUERY);
+            while (rs.next()){
+                System.out.println("Codigo: " + rs.getInt("codigo"));
+                System.out.println("Precio: " + rs.getInt("precio"));
+                System.out.println("Nombre: " + rs.getString("nombre"));
+                System.out.println("Descripcion: " + rs.getString("descripcion"));
+                System.out.println("Material: " + rs.getString("material"));
+                System.out.println("Tipo: " + rs.getString("tipo"));
+            }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+    }
+
+
 
     @Override
     public String toString() {
-        return super.toString()+"Tipo: "+tipo+"\n"+
-                "Hecho de: " + material;
+        return super.toString()+tipo+material;
 
     }
 }

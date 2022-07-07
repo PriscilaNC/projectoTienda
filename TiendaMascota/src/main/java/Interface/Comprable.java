@@ -6,5 +6,4 @@ public interface Comprable {
     void quitarStock();
     void agregarStock();
     void agregarNStock(int cantidad);
-    void actualizarDB();
 }

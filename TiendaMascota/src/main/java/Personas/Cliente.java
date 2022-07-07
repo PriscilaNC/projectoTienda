@@ -1,42 +1,66 @@
 package Personas;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.io.FileWriter;
-import java.io.IOException;
+public class Cliente extends Persona {
+    protected static List<Persona> staticCliente = new ArrayList<>();
+    static String QUERY = "SELECT * FROM clientes";
 
-public class Cliente extends Persona{
 
     public Cliente(String rut, String nombre, int edad) {
         super(rut, nombre, edad);
     }
 
-    @Override
-    public void crearJSON() {
-        //Serialization
-        //Crea el archivo
-        Gson pGson = new Gson();
-        String stringJson = pGson.toJson(this);
-        System.out.println("stringJson = " + stringJson);
 
-        //Deserialization
-        //Obtiene datos desde el archivo
-        Cliente cliente = pGson.fromJson(stringJson, Cliente.class);
-        System.out.println("cliente = " + cliente);
-        FileWriter writer;
-        try{
-            writer = new FileWriter("cliente.json");
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(this,writer);
-            writer.close();
-        }catch (IOException e){
-            System.out.println("No se pudo guardar el archivo");
+
+    @Override
+    public void agregarStatico() {
+        staticCliente.add(this);
+    }
+
+    @Override
+    public void actualizarDB() {
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             Statement stmt = conn.createStatement();
+        ) {
+            System.out.println("Insertando datos en la tabla...");
+
+
+            String sql = "INSERT INTO cliente (rut, nombre, edad) values " + "(" + super.rut + "," + super.nombre + "," + super.edad + ");";
+            stmt.executeUpdate(sql);
+            System.out.println(sql);
+
+            System.out.println("Datos insertados en la tabla...");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
+    public static void consultarCliente(){
+        try {
+        Connection con = DriverManager.getConnection(DB_URL,USER,PASS);
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery(QUERY);
+        while (rs.next()){
+            System.out.println("RUT: " + rs.getString("rut"));
+            System.out.println("Nombre: " + rs.getString("nombre"));
+            System.out.println("Edad: " + rs.getInt("edad"));
+        }
+    }catch (SQLException e){
+        System.out.println(e);
+        }
+    }
+
+    public static List<Persona> getStaticCliente() {
+        return staticCliente;
+    }
+
     @Override
-    public String toString() {
+    public String toString () {
         return super.toString();
     }
 }
+

@@ -2,22 +2,27 @@ package Animales;
 
 import Interface.Comprable;
 
-public abstract class Animal implements Comprable {
-    private int codigo;
-    private String nombre;
-    private String raza;
-    private String especie;
-    private String color;
-    private int stock;
-    private double masa;
-    private int edad;
-    private int valor;
-    private boolean sexo;
-    private String paisOrigen;
-    private String tipoAlimentacion;
+import java.util.List;
 
-    public Animal(int codido, String nombre, String raza, String especie,String color, double masa, int edad, int valor, boolean sexo, String paisOrigen, String tipoAlimentacion) {
-        this.codigo = codido;
+public abstract class Animal implements Comprable {
+    protected int codigo;
+    protected String nombre;
+    protected String raza;
+    protected String especie;
+    protected String color;
+    protected int stock;
+    protected double masa;
+    protected int edad;
+    protected int valor;
+    protected boolean sexo;
+    protected String paisOrigen;
+    protected String tipoAlimentacion;
+    static final String DB_URL = "jdbc:mysql://localhost/tienda_mascota";
+    static final String USER = "uwu";
+    static final String PASS = "12345678qwerty";
+
+    public Animal(int codigo, String nombre, String raza, String especie,String color, double masa, int edad, int valor, boolean sexo, String paisOrigen, String tipoAlimentacion) {
+        this.codigo = codigo;
         this.nombre = nombre;
         this.raza = raza;
         this.especie = especie;
@@ -31,14 +36,10 @@ public abstract class Animal implements Comprable {
         agregarStock();
     }
 
-    public abstract void crearJSON();
+    public abstract void agregarStatico();
 
     public int getCodigo() {
         return codigo;
-    }
-
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
     }
 
     public int getStock() {
@@ -53,7 +54,7 @@ public abstract class Animal implements Comprable {
         return this;
     }
 
-    private String sexo(){
+    public String sexo(){
         if (this.sexo == true){
             return "hembra";
         }else {
@@ -61,15 +62,10 @@ public abstract class Animal implements Comprable {
         }
     }
 
+    public abstract void actualizarDB();
+
     @Override
     public String toString() {
-        return codigo+" "+ nombre + "," + raza + "," + especie + '\n' +
-                "Color: "+color+"\n"+
-                "Peso: " + masa +"kg.\n" +
-                "Edad: " + edad +"años\n" +
-                "Valor $" + valor + "\n" +
-                "Sexo: " + sexo() + "\n" +
-                "Origen: " + paisOrigen + "\n" +
-                "Alimentacion: " + tipoAlimentacion + "\n";
+        return codigo + nombre + raza + especie +color + masa + edad + valor + sexo() + paisOrigen + tipoAlimentacion ;
     }
 }
