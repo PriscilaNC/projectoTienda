@@ -6,6 +6,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//todo implementar DateFormatException
+
 public class Medicamento extends Producto{
     protected String fechaElaboracion;
     protected String fechaVencimiento;

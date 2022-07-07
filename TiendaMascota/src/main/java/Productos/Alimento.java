@@ -1,10 +1,13 @@
 package Productos;
 
 import Animales.Animal;
+import Exceptions.DateFormatException;
+import Exceptions.ObjectNonOfClassExeption;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.*;
 
 public class Alimento extends Producto{
     protected String fechaElaboracion;
@@ -21,6 +24,8 @@ public class Alimento extends Producto{
         this.tipoAnimal = tipoAnimal;
         this.cantidadEnKg = cantidadEnKg;
         agregarStock();
+        //todo agregar metodo db al constructor
+        actualizarDB();
     }
 
     @Override
@@ -60,6 +65,7 @@ public class Alimento extends Producto{
         this.setStock(this.getStock() + cantidad);
     }
 
+    //todo probar DateFormatException
     @Override
     public void actualizarDB() {
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -73,11 +79,18 @@ public class Alimento extends Producto{
                     + "," + super.descripcion + "," + fechaElaboracion
                     + "," + fechaVencimiento + "," + tipoAnimal + ","
                     + cantidadEnKg + ");";
+            Pattern patron = Pattern.compile("^('[1-2]|[0-9]|[0-9]|[0-9])(-)([0-1]|[0-9])(-)([0-3]|[0-9]')$");
+            Matcher matcher1 = patron.matcher(fechaElaboracion);
+            Matcher matcher2 = patron.matcher(fechaVencimiento);
+            if( !matcher1.find() || !matcher2.find()) {
+                throw new DateFormatException();
+            }
             stmt.executeUpdate(sql);
             System.out.println(sql);
-
             System.out.println("Datos insertados en la tabla...");
-        } catch (SQLException e) {
+        } catch ( DateFormatException e) {
+            e.errormessage();
+        } catch (SQLException e){
             e.printStackTrace();
         }
     }

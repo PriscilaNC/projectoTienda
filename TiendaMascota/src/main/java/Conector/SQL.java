@@ -1,4 +1,5 @@
 package Conector;
+// todo quitar package conector
 
 import Personas.Cliente;
 

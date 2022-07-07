@@ -14,7 +14,7 @@ import Tienda.TiendaMascota;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+//todo actualizar gui
 public class GUI {
     //Botones
     private JButton subirTodoButton;
@@ -28,6 +28,8 @@ public class GUI {
     private JButton consultarAccesorioButton;
     private JButton consultarAlimentoButton;
     private JButton consultarMedicamentoButton;
+    private JTabbedPane tabbedPane1;
+    private JProgressBar progressBar1;
 
     public static void main(String[] args) {
         //Objeto tipo ventana
@@ -47,26 +49,17 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 //Accion realizada en la IDE al precionar el boton
                 TiendaMascota.main();
-                //Abre una ventana con un mensaje
-                JOptionPane.showMessageDialog(null, "Hola mundo");
             }
                 });
-
+// todo ver si resulta con lambda
         consultarAcuaticoButton.addActionListener(
-                new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Acuatico.consultarAcuatico();
-                JOptionPane.showMessageDialog(null, "soy otro boton :3");
-            }
-                });
+                e -> Acuatico.consultarAcuatico());
 
         consultarAereoButton.addActionListener(
                 new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Aereo.consultarAereo();
-                JOptionPane.showMessageDialog(null, "soy otro boton :3");
             }
                 });
 
@@ -75,7 +68,6 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Terrestre.consultarTerrestre();
-                JOptionPane.showMessageDialog(null, "soy otro boton :3");
             }
                 });
 
@@ -84,7 +76,7 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Cliente.consultarCliente();
-                JOptionPane.showMessageDialog(null, "soy otro boton :3");
+
             }
                 });
 
@@ -93,7 +85,6 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Funcionario.consultarFuncionario();
-                JOptionPane.showMessageDialog(null, "soy otro boton :3");
             }
                 });
 
@@ -102,7 +93,6 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Proveedor.consultarProveedor();
-                JOptionPane.showMessageDialog(null, "soy otro boton :3");
             }
                 });
 
@@ -111,7 +101,6 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Accesorio.consultarAccesorio();
-                JOptionPane.showMessageDialog(null, "soy otro boton :3");
             }
                 });
 
@@ -120,7 +109,6 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Alimento.consultarAlimento();
-                JOptionPane.showMessageDialog(null, "soy otro boton :3");
             }
                 });
 
@@ -129,12 +117,10 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Medicamento.consultarMedicamento();
-                JOptionPane.showMessageDialog(null, "soy otro boton :3");
             }
                 });
 
     }
 
+    }
 
-
-}

@@ -2,6 +2,7 @@ package Animales;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,7 +29,7 @@ class AnimalTest {
    void sexo(){
         assertEquals("hembra",a1.sexo());
     }
-
+    @Disabled
     @Test
     void testToString() {
     }

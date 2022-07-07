@@ -1,6 +1,5 @@
 package Tienda;//todo agregar un metodo con programacion funcional en boleta
-//todo crear una exepcion
-//todo crear pruebas unita
+//todo crear excepcion-> (creada por probar)
 
 import Animales.Acuatico;
 import Animales.Aereo;

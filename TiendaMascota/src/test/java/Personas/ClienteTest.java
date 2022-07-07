@@ -7,9 +7,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ClienteTest {
-
+    Cliente c1;
     @BeforeEach
     void setUp() {
+       c1 = new Cliente("'20489916-9'", "'cliente1'", 30);
     }
 
     @AfterEach
@@ -18,7 +19,6 @@ class ClienteTest {
 
     @Test
     void agregarStatico() {
-        Cliente c1 = new Cliente("'20489916-9'", "'cliente1'", 30);
         c1.agregarStatico();
         assertFalse(Cliente.getStaticCliente().isEmpty());
     }

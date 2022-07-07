@@ -2,7 +2,7 @@ package Transaccion;
 
 
 import Animales.Animal;
-import Exceptions.MiExepcion;
+import Exceptions.ObjectNonOfClassExeption;
 import Interface.Mostrable;
 import Personas.Cliente;
 import Productos.Producto;
@@ -71,9 +71,9 @@ public class Boleta implements Mostrable {
         try {
             this.detalleAnimal.add(animal);
             if (animal.getClass() != Animal.class){
-                throw new MiExepcion();
+                throw new ObjectNonOfClassExeption();
             }
-        }catch (MiExepcion e){
+        }catch (ObjectNonOfClassExeption e){
             e.mensajeError();
         }
     }
@@ -82,9 +82,9 @@ public class Boleta implements Mostrable {
         try {
             this.detalleProducto.add(producto);
             if (producto.getClass() != Producto.class){
-                throw new MiExepcion();
+                throw new ObjectNonOfClassExeption();
             }
-        }catch (MiExepcion e){
+        }catch (ObjectNonOfClassExeption e){
             e.mensajeError();
         }
     }

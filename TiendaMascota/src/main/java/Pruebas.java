@@ -3,6 +3,7 @@ import Animales.Acuatico;
 import Personas.Cliente;
 
 import Personas.Persona;
+import Productos.Alimento;
 
 
 public class Pruebas {
@@ -26,7 +27,7 @@ public class Pruebas {
         System.out.println(Acuatico.getStaticAcuatico());
         */
 
-        Cliente.getStaticCliente().clear();
+       /* Cliente.getStaticCliente().clear();
 
         Cliente c1 = new Cliente("'20489916-9'", "'cliente1'", 30);
         Cliente c2 = new Cliente("'20489916-9'", "'cliente2'", 40);
@@ -40,6 +41,9 @@ public class Pruebas {
 
         System.out.println(Cliente.getStaticCliente());
 
-        c1.actualizarDB();
+        c1.actualizarDB();*/
+
+        Alimento a1 = new Alimento(12,123,"dfg","sdfg","qwe","'2022-06-12'","dfgh",2);
+
     }
 }
